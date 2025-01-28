@@ -1,0 +1,57 @@
+#include <iostream>
+using namespace std;
+
+// Function to compute modular inverse using Extended Euclidean Algorithm
+int modInverse(int a, int n) {
+    int r1 = n, r2 = a;
+    int t1 = 0, t2 = 1;
+
+    while (r2 > 0) {
+        int q = r1 / r2;
+        int r = r1 - q * r2;
+        r1 = r2;
+        r2 = r;
+
+        int t = t1 - q * t2;
+        t1 = t2;
+        t2 = t;
+    }
+
+    // If gcd is not 1, inverse does not exist
+    if (r1 != 1) {
+        return -1; // No modular inverse
+    }
+
+    // Ensure positive modular inverse
+    if (t1 < 0) {
+        t1 += n;
+    }
+    return t1;
+}
+
+int main() {
+    int a, n;
+
+    // Taking user input
+    cout << "Enter value of a: ";
+    cin >> a;
+
+    cout << "Enter value of n: ";
+    cin >> n;
+
+    int inverse = modInverse(a, n);
+
+    if (inverse == -1) {
+        cout << "Multiplicative inverse does not exist." << endl;
+    } else {
+        cout << "Modular inverse of " << a << " modulo " << n << " is: " << inverse << endl;
+    }
+
+    return 0;
+}
+//output
+Enter value of a: 3
+Enter value of n: 11
+Modular inverse of 3
+modulo 11 is:
+4
