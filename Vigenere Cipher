@@ -1,0 +1,70 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Function to encrypt text using Vigenère Cipher
+string encrypt(const string& text, const string& key) {
+    string result = "";
+    string extendedKey = key;
+    
+    // Repeat key until it's long enough
+    while (extendedKey.length() < text.length()) {
+        extendedKey += key;
+    }
+    
+    // Encrypt the text
+    for (int i = 0; i < text.length(); i++) {
+        char ch = ((text[i] - 'A' + (extendedKey[i] - 'A')) % 26) + 'A';
+        result += ch;
+    }
+    return result;
+}
+
+// Function to decrypt cipher text using Vigenère Cipher
+string decrypt(const string& cipher, const string& key) {
+    string result = "";
+    string extendedKey = key;
+    
+    // Repeat key until it's long enough
+    while (extendedKey.length() < cipher.length()) {
+        extendedKey += key;
+    }
+    
+    // Decrypt the cipher
+    for (int i = 0; i < cipher.length(); i++) {
+        char ch = ((cipher[i] - extendedKey[i] + 26) % 26) + 'A';
+        result += ch;
+    }
+    return result;
+}
+
+int main() {
+    string text, key;
+
+    // Taking user input
+    cout << "Enter plaintext (A-Z): ";
+    getline(cin, text);
+    cout << "Enter key (A-Z): ";
+    getline(cin, key);
+
+    // Convert input to uppercase
+    for (char &ch : text) {
+        ch = toupper(ch);
+    }
+    for (char &ch : key) {
+        ch = toupper(ch);
+    }
+
+    string cipher = encrypt(text, key);
+    cout << "Encrypted: " << cipher << endl;
+
+    string decrypted = decrypt(cipher, key);
+    cout << "Decrypted: " << decrypted << endl;
+
+    return 0;
+}
+//output
+Enter plaintext (A-Z): VIGNERECIPHER
+Enter key (A-Z): SECRET
+Encrypted: NMIEIKWGKGLXJ
+Decrypted: VIGNERECIPHER
