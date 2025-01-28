@@ -1,0 +1,62 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+// Function to perform modular exponentiation
+long long modExp(long long base, long long exp, long long mod) {
+    long long result = 1;
+    while (exp > 0) {
+        if (exp % 2 == 1) {
+            result = (result * base) % mod;
+        }
+        base = (base * base) % mod;
+        exp /= 2;
+    }
+    return result;
+}
+
+// Function to compute modular inverse 
+long long modInverse(long long a, long long p) {
+    return modExp(a, p - 2, p); // a^(p-2) % p
+}
+
+int main() {
+    int p, e1, e2, d, r, message;
+
+    // Input values
+    cout << "Enter prime p: ";
+    cin >> p;
+    cout << "Enter generator e1: ";
+    cin >> e1;
+    cout << "Enter public key e2: ";
+    cin >> e2;
+    cout << "Enter private key d: ";
+    cin >> d;
+    cout << "Enter random key r: ";
+    cin >> r;
+    cout << "Enter plaintext (as integer): ";
+    cin >> message;
+
+    // Encryption
+    long long c1 = modExp(e1, r, p); // c1 = (e1^r) % p
+    long long c2 = (message * modExp(e2, r, p)) % p; // c2 = (message * (e2^r) % p) % p
+
+    // Decryption
+    long long c1_inverse = modInverse(c1, p); // Modular inverse of c1
+    long long decrypted = (c2 * modExp(c1_inverse, d, p)) % p; // decrypted = (c2 * (c1^-d)) % p
+
+    // Output results
+    cout << "Encrypted: c1 = " << c1 << ", c2 = " << c2 << endl;
+    cout << "Decrypted: " << decrypted << endl;
+
+    return 0;
+}
+//output
+Enter prime p: 11
+Enter generator el: 2
+Enter public key e2: 8
+Enter private key d: 3
+Enter random key r: 4
+Enter plaintext (as integer): 7
+Encrypted: c1 = 5, c2 = 6
+Decrypted: 7
