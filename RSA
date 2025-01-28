@@ -45,3 +45,11 @@ int main() {
 
     return 0;
 }
+//output
+Enter prime p: 61
+Enter prime q: 53
+Enter public key e: 17
+Enter private key d: 2753
+Enter plaintext (as integer): 65
+Encrypted: 2790
+Decrypted: 65
